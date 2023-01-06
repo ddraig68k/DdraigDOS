@@ -1,0 +1,47 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"amiga-assembly.vasm": {
+			"enabled": false
+		},
+		"files.associations": {
+			"*.inc": "m68k",
+			"duart.h": "c",
+			"diskio.h": "c",
+			"ff.h": "c",
+			"stdint.h": "c",
+			"stdlib.h": "c",
+			"stdbool.h": "c",
+			"string.h": "c",
+			"stdio.h": "c",
+			"printf.h": "c",
+			"keyboard.h": "c",
+			"keycodes.h": "c",
+			"ddraig.h": "c",
+			"conio.h": "c",
+			"pit.h": "c",
+			"ringbuffer.h": "c",
+			"debug.h": "c",
+			"ne2k.h": "c",
+			"ne2k_const.h": "c",
+			"display.h": "c",
+			"expansion.h": "c",
+			"ffconf.h": "c",
+			"syscall.h": "c"
+		},
+		"files.exclude": {
+			"*.bin": true,
+			"*.hex": true,
+			"*.s68": true,
+			"*.elf": true,
+			"*.o": true,
+			"*/*.o": true,
+			"*/*/*.o": true
+        },
+    },
+
+}

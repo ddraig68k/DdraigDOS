@@ -1,0 +1,12 @@
+.DS_Store
+*.o
+*.a
+*.bin
+*.elf
+*.map
+*.lst
+*.srec
+*.hex
+*.s68
+*.log
+
