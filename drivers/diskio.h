@@ -16,8 +16,7 @@
 #define	ATA_REG_STATUS	        *((volatile uint8_t  *) (IDE_BASE + 0x0E))            /* Status Register (R) */
 #define	ATA_REG_COMMAND	        *((volatile uint8_t  *) (IDE_BASE + 0x0E))            /* Command Register (W) */
 #define ATA_REG_ALT_STATUS      *((volatile uint8_t  *) (IDE_BASE + 0x8C))            /* Alternate Status (R) */
-#define ATA_REG_INTERRUPT       *((volatile uint8_t  *) (IDE_BASE + 0x8C))            /* Interrupt/Reset Register (W) */
-#define ATA_REG_DIGITALOUT      *((volatile uint8_t  *) (IDE_BASE + 0x8C))            /* Digital Output (W) */
+#define ATA_REG_DRIVE_CONTROL   *((volatile uint8_t  *) (IDE_BASE + 0x8C))            /* Interrupt/Reset Register (W) */
 #define ATA_REG_DRIVE_ADDR      *((volatile uint8_t  *) (IDE_BASE + 0x8E))            /* Drive Address (R) */
 
 #define ATA_CMD_READ_SECTORS	0x20
@@ -25,17 +24,17 @@
 #define ATA_CMD_IDENTIFY	    0xEC
 #define ATA_CMD_SET_FEATURE	    0xEF
 
-#define ATA_ST_BUSY             0x80            /* Busy flag indicating internal operation */
-#define ATA_ST_DRDY             0x40            /* Drive ready, set when drive is up to speed and ready to accept commands */
-#define ATA_ST_WFAULT           0x20            /* Drive write fault */
-#define ATA_ST_SEEKCOMP         0x10            /* Drive seek complete */
-#define ATA_ST_DATA_READY       0x08            /* Indicates that the drive is ready for data transfer */
-#define ATA_ST_CORRECTED        0x04            /* Set when there was a correctable data error found */
-#define ATA_ST_INDEX            0x02            /* Set once per disk revolution, can determine rotational speed */
-#define ATA_ST_ERROR            0x01            /* Set whenever an error occured */
+#define ATA_STATUS_BUSY         0x80            /* Busy flag indicating internal operation */
+#define ATA_STATUS_DRDY         0x40            /* Drive ready, set when drive is up to speed and ready to accept commands */
+#define ATA_STATUS_WFAULT       0x20            /* Drive write fault */
+#define ATA_STATUS_SEEKCOMP     0x10            /* Drive seek complete */
+#define ATA_STATUS_DATA_READY   0x08            /* Indicates that the drive is ready for data transfer */
+#define ATA_STATUS_CORRECTED    0x04            /* Set when there was a correctable data error found */
+#define ATA_STATUS_INDEX        0x02            /* Set once per disk revolution, can determine rotational speed */
+#define ATA_STATUS_ERROR        0x01            /* Set whenever an error occured */
 
 #define ATA_SECTOR_SIZE         512
-#define ATA_TIMEOUT             0x300000
+#define ATA_TIMEOUT             100000
 
 
 /* Status of Disk Functions */

@@ -17,7 +17,7 @@
 #include "drivers/keyboard.h"
 
 #define LINELEN 256
-#define DOS_VERSION "0.3.6"
+#define DOS_VERSION "0.3.7"
 
 uint32_t g_timer_ticks = 0;
 char g_cmd_buffer[LINELEN];

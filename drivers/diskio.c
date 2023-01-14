@@ -53,7 +53,7 @@ int ata_wait_not_busy()
     do
     {
         uint8_t status = ATA_REG_STATUS;
-        if ((status & ATA_ST_BUSY) == 0)
+        if ((status & ATA_STATUS_BUSY) == 0)
             return 0;
     }
     while (timeout--);
@@ -70,7 +70,7 @@ int ata_wait_for_data()
     do
     {
         uint8_t status = ATA_REG_STATUS;
-        if ((status & ATA_ST_BUSY) == 0)
+        if ((status & ATA_STATUS_BUSY) == 0)
             return 0;
     }
     while (timeout--);
@@ -100,7 +100,7 @@ int ata_read_sector(int sector, int count, uint16_t *buffer)
 
 
 	uint8_t status = ATA_REG_STATUS;
-	if (status & ATA_ST_ERROR)
+	if (status & ATA_STATUS_ERROR)
 		return 1;
 
 	if (ata_wait_not_busy())
@@ -142,7 +142,7 @@ int ata_write_sector(int sector, int count, uint16_t *buffer)
 	ATA_REG_COMMAND = ATA_CMD_WRITE_SECTORS;
 
 	uint8_t status = ATA_REG_STATUS;
-	if (status & ATA_ST_ERROR)
+	if (status & ATA_STATUS_ERROR)
 		return 1;
 
 	if (ata_wait_not_busy())
@@ -153,8 +153,18 @@ int ata_write_sector(int sector, int count, uint16_t *buffer)
         return 1;
     }
 
-	for (int i = 0; i < 256; i++)
-		ATA_REG_DATA = buffer[i];
+	__asm__ volatile
+    (
+        "move.l	%0, %%a0\n\t"
+        "move.l %1, %%a1\n\t"
+        "move.l #255, %%d0\n\t"
+        ".write_ata: move.w (%%a1)+,(%%a0)\n\t"
+        "dbra.w %%d0,.write_ata"
+        : /* no outputs */
+        : "g" (IDE_BASE), "g" (buffer)
+        : "%a0", "%a1", "%d0" /* clobbered registers */
+	);
+
 
 	return 0;
 }
@@ -191,7 +201,7 @@ int ata_read_identity(void)
     }
 
 	uint8_t status = ATA_REG_STATUS;
-	if (status & ATA_ST_ERROR)
+	if (status & ATA_STATUS_ERROR)
     {
 #ifdef DEBUG_PRINT
         printf("ata_read_identity: disk status error - status = %02X\n", status);
@@ -387,6 +397,10 @@ int initialise_disk(void)
 {
     char cmd_buffer[4];
 
+    ATA_REG_DRIVE_CONTROL = 0x02;  // Disable drive interrupt, clear reset
+	ata_wait_not_busy();
+    ATA_REG_DRIVE_HEAD = 0;
+    
 #ifdef DEBUG_PRINT
     if (ata_read_identity())
     {
